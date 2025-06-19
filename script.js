@@ -4,11 +4,11 @@ const editPanel = document.getElementById('editPanel');
 const spinAudio = document.getElementById('spinAudio');
 
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
-    'Nagroda 1',
-    'Nagroda 2',
-    'Nagroda 3',
-    'Nagroda 4',
-    'booste'
+    'BOOSTER',
+    'KARTA',
+    'KOSZULKI',
+    'PUSZKA',
+    'PRZYPINKA'
 ];
 let history = JSON.parse(localStorage.getItem('history')) || [];
 
@@ -53,19 +53,22 @@ function spinWheel() {
     if (spinning || spinStrength <= 0) return;
     spinning = true;
     const segAngle = 360 / prizes.length;
+    const extraSpins = spinStrength + Math.floor(Math.random() * 5);
     const rand = Math.floor(Math.random() * prizes.length);
-    const targetAngle = spinStrength * 360 + rand * segAngle + segAngle / 2;
+    const randomOffset = Math.random() * segAngle;
+    const targetAngle = extraSpins * 360 + rand * segAngle + randomOffset;
     angle = targetAngle;
     wheel.style.transform = `rotate(-${angle}deg)`;
     spinAudio.currentTime = 0;
     spinAudio.play();
     setTimeout(() => {
         spinning = false;
-        const result = prizes[rand];
-        if (result.toLowerCase() === 'booste') {
+        const index = Math.floor((angle % 360) / segAngle) % prizes.length;
+        const result = prizes[index];
+        if (result.toLowerCase() === 'booster') {
             confetti();
         }
-        highlightSegment(rand);
+        highlightSegment(index);
         history.push(result);
         localStorage.setItem('history', JSON.stringify(history));
     }, 4000);
