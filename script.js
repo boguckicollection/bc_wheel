@@ -2,6 +2,7 @@ const wheel = document.getElementById('wheel');
 const spinButton = document.getElementById('spinButton');
 const editPanel = document.getElementById('editPanel');
 const spinAudio = document.getElementById('spinAudio');
+const resultsTable = document.getElementById('resultsTable');
 
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
     'BOOSTER',
@@ -17,7 +18,7 @@ let spinning = false;
 let spinStrength = 10;
 
 function drawWheel() {
-    wheel.innerHTML = '<div class="pointer"></div>';
+    wheel.innerHTML = '';
     const segAngle = 360 / prizes.length;
     prizes.forEach((prize, i) => {
         const seg = document.createElement('div');
@@ -33,6 +34,7 @@ function drawWheel() {
         seg.appendChild(label);
         wheel.appendChild(seg);
     });
+    updateResultsTable();
 }
 
 function buildEditor() {
@@ -71,6 +73,7 @@ function spinWheel() {
         highlightSegment(index);
         history.push(result);
         localStorage.setItem('history', JSON.stringify(history));
+        updateResultsTable();
     }, 4000);
     spinStrength = Math.max(0, spinStrength - 2);
 }
@@ -81,10 +84,26 @@ function highlightSegment(index) {
     segs[index].classList.add('highlight');
 }
 
+function updateResultsTable() {
+    resultsTable.innerHTML = '<tr><th>Gratis</th><th>Ilość</th></tr>';
+    prizes.forEach(prize => {
+        const count = history.filter(h => h === prize).length;
+        const tr = document.createElement('tr');
+        const nameTd = document.createElement('td');
+        nameTd.textContent = prize;
+        const countTd = document.createElement('td');
+        countTd.textContent = count;
+        tr.appendChild(nameTd);
+        tr.appendChild(countTd);
+        resultsTable.appendChild(tr);
+    });
+}
+
 spinButton.addEventListener('click', spinWheel);
 
 drawWheel();
 buildEditor();
+updateResultsTable();
 
 // Example chat command handler
 function onChatCommand(cmd) {
