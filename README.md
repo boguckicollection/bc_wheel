@@ -8,6 +8,8 @@ Domyślne pola to: **BOOSTER**, **KARTA**, **KOSZULKI**, **PUSZKA**, **PRZYPINKA
 2. Za pomocą przycisku **Kręć!** lub wywołując funkcję `onChatCommand('!spin')` rozpocznij losowanie.
 3. Pola koła można edytować w panelu w lewym dolnym rogu.
 4. Jeżeli wylosowane zostanie pole `BOOSTER`, pojawi się konfetti.
-5. Do pliku `spin.mp3` dodaj własny efekt dźwiękowy.
+5. Dla nagród `BOOSTER` i `KOSZULKI` obsługiwane są osobne efekty dźwiękowe
+   (`booster-fanfare.mp3`, `tshirt-win.mp3`) oraz animacje.
+6. Do pliku `spin.mp3` dodaj własny efekt dźwiękowy dla samego kręcenia.
 
 Integrację z czatem YouTube należy zrealizować po stronie bota wywołującego funkcję `onChatCommand` po wykryciu komendy na czacie.
