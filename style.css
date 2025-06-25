@@ -193,3 +193,30 @@ body {
 .wheel.flash {
     animation: flashBorder 1s;
 }
+
+@keyframes pulseWheel {
+    0%, 100% { box-shadow: 0 0 15px #fff; }
+    50% { box-shadow: 0 0 50px #0ff; }
+}
+
+.wheel.pulse {
+    animation: pulseWheel 1s;
+}
+
+@keyframes glowWheel {
+    0%, 100% { filter: none; }
+    50% { filter: drop-shadow(0 0 20px #ff0); }
+}
+
+.wheel.glow {
+    animation: glowWheel 1s;
+}
+
+@keyframes pointerBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
+
+.pointer.bounce {
+    animation: pointerBounce 0.6s;
+}
