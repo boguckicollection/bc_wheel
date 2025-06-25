@@ -28,7 +28,7 @@ function drawWheel() {
         const label = document.createElement('span');
         label.className = 'label';
         label.textContent = prize;
-        label.style.transform = `skewY(${-(90 - segAngle)}deg) rotate(${segAngle / 2}deg)`;
+        label.style.transform = `skewY(${-(90 - segAngle)}deg) rotate(${segAngle / 2}deg) translateY(-80%)`;
 
         seg.appendChild(label);
         wheel.appendChild(seg);
@@ -53,6 +53,7 @@ function buildEditor() {
 function spinWheel() {
     if (spinning) return;
     spinning = true;
+    wheel.classList.add('spinning');
     const segAngle = 360 / prizes.length;
     const extraSpins = 2 + Math.floor(Math.random() * 4); // at least two full spins
     const rand = Math.floor(Math.random() * prizes.length);
@@ -64,6 +65,7 @@ function spinWheel() {
     spinAudio.play();
     setTimeout(() => {
         spinning = false;
+        wheel.classList.remove('spinning');
         const index = (prizes.length - Math.floor((angle % 360) / segAngle)) % prizes.length;
         const result = prizes[index];
         if (result.toLowerCase() === 'booster') {
