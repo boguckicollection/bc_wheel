@@ -6,6 +6,8 @@ const boosterAudio = document.getElementById('boosterAudio');
 const tshirtAudio = document.getElementById('tshirtAudio');
 const pointer = document.getElementById('pointer');
 const resultsTable = document.getElementById('resultsTable');
+const resultText = document.getElementById('resultText');
+const channel = new BroadcastChannel('wheel-sync');
 
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
     'BOOSTER',
@@ -80,29 +82,41 @@ function buildEditor() {
     });
 }
 
-function spinWheel() {
+function spinWheel(remoteData = null) {
     if (spinning) return;
     spinning = true;
     wheel.classList.add('spinning');
     const segAngle = 360 / prizes.length;
-    const extraSpins = 2 + Math.floor(Math.random() * 4); // at least two full spins
-    const rand = Math.floor(Math.random() * prizes.length);
-    const randomOffset = Math.random() * segAngle;
-    const spinAngle = extraSpins * 360 + rand * segAngle + randomOffset;
+    let spinAngle;
+    let index;
+
+    if (remoteData) {
+        spinAngle = remoteData.spinAngle;
+        index = remoteData.index;
+    } else {
+        const extraSpins = 2 + Math.floor(Math.random() * 4);
+        index = Math.floor(Math.random() * prizes.length);
+        const randomOffset = Math.random() * segAngle;
+        spinAngle = extraSpins * 360 + index * segAngle + randomOffset;
+        channel.postMessage({ type: 'spin', spinAngle, index });
+    }
+
     angle += spinAngle;
     wheel.style.transform = `rotate(${angle}deg)`;
     spinAudio.currentTime = 0;
     spinAudio.play();
+    const result = prizes[index];
+
     setTimeout(() => {
         spinning = false;
         wheel.classList.remove('spinning');
-        const index = (prizes.length - Math.floor((angle % 360) / segAngle)) % prizes.length;
-        const result = prizes[index];
         triggerPrizeEffects(result);
         highlightSegment(index);
+        showResultText(result);
         history.push(result);
         localStorage.setItem('history', JSON.stringify(history));
         updateResultsTable();
+        angle = angle % 360;
     }, 4000);
 }
 
@@ -136,6 +150,13 @@ function pulseWheel() {
 function glowWheel() {
     wheel.classList.add('glow');
     setTimeout(() => wheel.classList.remove('glow'), 1000);
+}
+
+function showResultText(text) {
+    resultText.textContent = text;
+    resultText.classList.remove('show');
+    void resultText.offsetWidth;
+    resultText.classList.add('show');
 }
 
 function bouncePointer() {
@@ -186,6 +207,12 @@ function updateResultsTable() {
 }
 
 spinButton.addEventListener('click', spinWheel);
+
+channel.onmessage = e => {
+    if (e.data && e.data.type === 'spin') {
+        spinWheel(e.data);
+    }
+};
 
 drawWheel();
 buildEditor();
