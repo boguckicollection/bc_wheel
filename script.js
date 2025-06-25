@@ -22,20 +22,47 @@ let spinning = false;
 function drawWheel() {
     wheel.innerHTML = '';
     const segAngle = 360 / prizes.length;
+    const size = wheel.clientWidth;
+    const radius = size / 2;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+
     prizes.forEach((prize, i) => {
-        const seg = document.createElement('div');
-        seg.className = 'segment';
-        seg.style.transform = `rotate(${i * segAngle}deg) skewY(${90 - segAngle}deg)`;
-        seg.style.backgroundColor = `hsl(${i * (360 / prizes.length)},70%,40%)`;
+        const start = i * segAngle;
+        const end = start + segAngle;
+        const large = segAngle > 180 ? 1 : 0;
+        const x1 = radius + radius * Math.cos(start * Math.PI / 180);
+        const y1 = radius + radius * Math.sin(start * Math.PI / 180);
+        const x2 = radius + radius * Math.cos(end * Math.PI / 180);
+        const y2 = radius + radius * Math.sin(end * Math.PI / 180);
 
-        const label = document.createElement('span');
-        label.className = 'label';
-        label.textContent = prize;
-        label.style.transform = `skewY(${-(90 - segAngle)}deg) rotate(${segAngle / 2}deg) translateY(-95%)`;
+        const group = document.createElementNS(svgNS, 'g');
+        group.classList.add('segment');
 
-        seg.appendChild(label);
-        wheel.appendChild(seg);
+        const path = document.createElementNS(svgNS, 'path');
+        const d = `M ${radius} ${radius} L ${x1} ${y1} A ${radius} ${radius} 0 ${large} 1 ${x2} ${y2} Z`;
+        path.setAttribute('d', d);
+        path.setAttribute('fill', `hsl(${i * (360 / prizes.length)},70%,40%)`);
+        group.appendChild(path);
+
+        const mid = start + segAngle / 2;
+        const tx = radius + radius * 0.65 * Math.cos(mid * Math.PI / 180);
+        const ty = radius + radius * 0.65 * Math.sin(mid * Math.PI / 180);
+        const text = document.createElementNS(svgNS, 'text');
+        text.setAttribute('x', tx);
+        text.setAttribute('y', ty);
+        text.setAttribute('transform', `rotate(${mid} ${tx} ${ty})`);
+        text.textContent = prize;
+        text.classList.add('label');
+        group.appendChild(text);
+
+        svg.appendChild(group);
     });
+
+    wheel.appendChild(svg);
     updateResultsTable();
 }
 

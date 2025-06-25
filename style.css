@@ -82,28 +82,27 @@ body {
     }
 }
 
-.segment {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0% 0%;
-    display: flex;
-    align-items: flex-end;
-    justify-content: center;
-    border: 1px solid rgba(0,0,0,0.5);
-    color: #fff;
-    padding-bottom: 10px;
-    box-sizing: border-box;
-    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+.segment path {
+    stroke: rgba(0,0,0,0.5);
+    stroke-width: 1;
+    filter: drop-shadow(0 0 5px rgba(0,0,0,0.3));
 }
 
-.segment .label {
-    display: block;
+.segment text {
+    fill: #fff;
     font-size: 14px;
-    white-space: nowrap;
     font-weight: 700;
+    text-anchor: middle;
+    dominant-baseline: middle;
+    pointer-events: none;
+}
+
+.segment.highlight path {
+    fill: #ff0 !important;
+}
+
+.segment.highlight text {
+    fill: #000;
 }
 
 .pointer {
@@ -169,10 +168,6 @@ body {
     padding: 5px 10px;
 }
 
-.highlight {
-    background: #ff0;
-    color: #000;
-}
 
 /* unique prize effects */
 @keyframes shake {
