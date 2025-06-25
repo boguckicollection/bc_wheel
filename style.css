@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 
 body {
     margin: 0;
-    font-family: 'Press Start 2P', Arial, sans-serif;
-    background: linear-gradient(45deg, #141e30, #243b55);
+    font-family: 'Montserrat', Arial, sans-serif;
+    background: transparent;
     color: #fff;
     text-align: center;
 }
@@ -29,12 +29,12 @@ body {
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 8px solid #0ff;
-    box-shadow: 0 0 20px #0ff;
+    border: 8px solid #333;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5), 0 0 15px rgba(255,255,255,0.2);
     overflow: hidden;
     transform: rotate(0deg);
     transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
-    background: radial-gradient(circle, #444, #111);
+    background: radial-gradient(circle, #666, #222);
 }
 
 .segment {
@@ -47,16 +47,18 @@ body {
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    border: 1px solid #000;
+    border: 1px solid rgba(0,0,0,0.5);
     color: #fff;
     padding-bottom: 10px;
     box-sizing: border-box;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
 }
 
 .segment .label {
     display: block;
-    font-size: 12px;
+    font-size: 14px;
     white-space: nowrap;
+    font-weight: 700;
 }
 
 .pointer {
@@ -68,7 +70,7 @@ body {
     height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-bottom: 30px solid #f00;
+    border-top: 30px solid #f00;
     filter: drop-shadow(0 0 5px #f00);
 }
 
