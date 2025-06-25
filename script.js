@@ -15,7 +15,6 @@ let history = JSON.parse(localStorage.getItem('history')) || [];
 
 let angle = 0;
 let spinning = false;
-let spinStrength = 10;
 
 function drawWheel() {
     wheel.innerHTML = '';
@@ -52,20 +51,20 @@ function buildEditor() {
 }
 
 function spinWheel() {
-    if (spinning || spinStrength <= 0) return;
+    if (spinning) return;
     spinning = true;
     const segAngle = 360 / prizes.length;
-    const extraSpins = spinStrength + Math.floor(Math.random() * 5);
+    const extraSpins = 2 + Math.floor(Math.random() * 4); // at least two full spins
     const rand = Math.floor(Math.random() * prizes.length);
     const randomOffset = Math.random() * segAngle;
-    const targetAngle = extraSpins * 360 + rand * segAngle + randomOffset;
-    angle = targetAngle;
-    wheel.style.transform = `rotate(-${angle}deg)`;
+    const spinAngle = extraSpins * 360 + rand * segAngle + randomOffset;
+    angle += spinAngle;
+    wheel.style.transform = `rotate(${angle}deg)`;
     spinAudio.currentTime = 0;
     spinAudio.play();
     setTimeout(() => {
         spinning = false;
-        const index = Math.floor((angle % 360) / segAngle) % prizes.length;
+        const index = (prizes.length - Math.floor((angle % 360) / segAngle)) % prizes.length;
         const result = prizes[index];
         if (result.toLowerCase() === 'booster') {
             confetti();
@@ -75,7 +74,6 @@ function spinWheel() {
         localStorage.setItem('history', JSON.stringify(history));
         updateResultsTable();
     }, 4000);
-    spinStrength = Math.max(0, spinStrength - 2);
 }
 
 function highlightSegment(index) {
