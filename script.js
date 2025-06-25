@@ -2,6 +2,8 @@ const wheel = document.getElementById('wheel');
 const spinButton = document.getElementById('spinButton');
 const editPanel = document.getElementById('editPanel');
 const spinAudio = document.getElementById('spinAudio');
+const boosterAudio = document.getElementById('boosterAudio');
+const tshirtAudio = document.getElementById('tshirtAudio');
 const resultsTable = document.getElementById('resultsTable');
 
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
@@ -68,9 +70,7 @@ function spinWheel() {
         wheel.classList.remove('spinning');
         const index = (prizes.length - Math.floor((angle % 360) / segAngle)) % prizes.length;
         const result = prizes[index];
-        if (result.toLowerCase() === 'booster') {
-            confetti();
-        }
+        triggerPrizeEffects(result);
         highlightSegment(index);
         history.push(result);
         localStorage.setItem('history', JSON.stringify(history));
@@ -82,6 +82,34 @@ function highlightSegment(index) {
     const segs = wheel.querySelectorAll('.segment');
     segs.forEach(s => s.classList.remove('highlight'));
     segs[index].classList.add('highlight');
+}
+
+function playSound(audio) {
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+}
+
+function shakeWheel() {
+    wheel.classList.add('shake');
+    setTimeout(() => wheel.classList.remove('shake'), 500);
+}
+
+function flashBorder() {
+    wheel.classList.add('flash');
+    setTimeout(() => wheel.classList.remove('flash'), 1000);
+}
+
+function triggerPrizeEffects(result) {
+    const res = result.toLowerCase();
+    if (res === 'booster') {
+        confetti();
+        playSound(boosterAudio);
+        shakeWheel();
+    } else if (res === 'koszulki') {
+        flashBorder();
+        playSound(tshirtAudio);
+    }
 }
 
 function updateResultsTable() {
