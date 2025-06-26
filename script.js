@@ -8,7 +8,6 @@ const spinSound = document.getElementById('spinSound');
 const boosterSound = document.getElementById('boosterSound');
 const tshirtSound = document.getElementById('tshirtSound');
 const pointerEl = document.getElementById('pointer');
-const lightsEl = document.getElementById('lights');
 
 const POINTER_ANGLE = -Math.PI / 2; // pointer at top
 
@@ -143,20 +142,9 @@ function buildEditor() {
   });
 }
 
-function buildLights() {
-  const radius = canvas.width / 2;
-  lightsEl.innerHTML = '';
-  for (let i = 0; i < PEG_COUNT; i++) {
-    const light = document.createElement('div');
-    light.className = 'light';
-    light.style.transform = `rotate(${(i * 360 / PEG_COUNT) - 90}deg) translate(${radius + 20}px)`;
-    light.style.animationDelay = `${(i / PEG_COUNT)}s`;
-    lightsEl.appendChild(light);
-  }
-}
 
 function showResult(prize) {
-  resultEl.textContent = prize;
+  resultEl.textContent = prize.toUpperCase();
   resultEl.classList.remove('neon');
   if (prize.toLowerCase() === 'booster') {
     resultEl.textContent = 'BOOSTER';
@@ -204,8 +192,6 @@ function spin() {
   const pegStep = 2 * Math.PI / PEG_COUNT;
   let lastPeg = Math.floor(((POINTER_ANGLE - angle + 2 * Math.PI) % (2 * Math.PI)) / pegStep);
 
-  lightsEl.classList.add('active');
-
   spinSound.currentTime = 0;
   spinSound.play();
 
@@ -227,7 +213,6 @@ function spin() {
     } else {
       spinning = false;
       angle %= 2 * Math.PI;
-      lightsEl.classList.remove('active');
       const idx = getCurrentIndex();
       const prize = prizes[idx];
       history.push(prize);
@@ -244,7 +229,6 @@ spinBtn.addEventListener('click', spin);
 drawWheel();
 buildEditor();
 updateHistory();
-buildLights();
 
 // example for chat command integration
 function onChatCommand(cmd) {
