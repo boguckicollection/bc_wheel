@@ -7,6 +7,7 @@ const historyTable = document.getElementById('history');
 const spinSound = document.getElementById('spinSound');
 const boosterSound = document.getElementById('boosterSound');
 const tshirtSound = document.getElementById('tshirtSound');
+const pointerEl = document.getElementById('pointer');
 
 // Different fonts for each sector
 const prizeFonts = [
@@ -16,6 +17,8 @@ const prizeFonts = [
   'Brush Script MT, cursive',
   'Papyrus, fantasy'
 ];
+
+const PEG_COUNT = 30;
 
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
   'BOOSTER',
@@ -51,11 +54,30 @@ function drawWheel() {
     ctx.translate(radius + (radius * 0.8) * Math.cos(mid), radius + (radius * 0.8) * Math.sin(mid));
     ctx.rotate(mid + Math.PI);
     ctx.fillStyle = '#fff';
-    ctx.font = `bold 24px ${prizeFonts[i % prizeFonts.length]}`;
+    let fontSize = radius / 5;
+    ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
+    const maxWidth = seg * radius * 0.8;
+    while (ctx.measureText(prizes[i]).width > maxWidth && fontSize > 10) {
+      fontSize -= 1;
+      ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
+    }
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(prizes[i], 0, 0);
     ctx.restore();
+  }
+
+  // pegs
+  for (let i = 0; i < PEG_COUNT; i++) {
+    const a = angle + i * (2 * Math.PI / PEG_COUNT);
+    const x = radius + (radius - 6) * Math.cos(a);
+    const y = radius + (radius - 6) * Math.sin(a);
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = '#fff';
+    ctx.fill();
+    ctx.strokeStyle = '#000';
+    ctx.stroke();
   }
 }
 
@@ -118,6 +140,8 @@ function spin() {
   const start = performance.now();
   const duration = 4000;
   const initial = angle;
+  const pegStep = 2 * Math.PI / PEG_COUNT;
+  let lastPeg = Math.floor(angle / pegStep);
 
   spinSound.currentTime = 0;
   spinSound.play();
@@ -127,6 +151,13 @@ function spin() {
     if (t > 1) t = 1;
     const eased = 1 - Math.pow(1 - t, 3);
     angle = initial + eased * (finalAngle - initial);
+    const currentPeg = Math.floor(angle / pegStep);
+    if (currentPeg !== lastPeg) {
+      pointerEl.classList.remove('hit');
+      void pointerEl.offsetWidth;
+      pointerEl.classList.add('hit');
+      lastPeg = currentPeg;
+    }
     drawWheel();
     if (t < 1) {
       requestAnimationFrame(animate);
