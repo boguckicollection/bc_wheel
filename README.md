@@ -1,15 +1,12 @@
 # bc_wheel
 
-Prosty overlay HTML/CSS/JS przedstawiający koło z 5 polami do użycia na streamie.
-Domyślne pola to: **BOOSTER**, **KARTA**, **KOSZULKI**, **PUSZKA**, **PRZYPINKA**.
+Prosty overlay HTML/CSS/JS prezentujący koło losujące gratisy na streamie. Domyślne pola to: **BOOSTER**, **KARTA**, **KOSZULKI**, **PUSZKA**, **PRZYPINKA**.
 
 ## Użycie
-1. Otwórz `index.html` w obsługiwanym przez OBS przeglądarce.
-2. Za pomocą przycisku **Kręć!** lub wywołując funkcję `onChatCommand('!spin')` rozpocznij losowanie.
-3. Pola koła można edytować w panelu w lewym dolnym rogu.
-4. Jeżeli wylosowane zostanie pole `BOOSTER`, pojawi się konfetti.
-5. Dla nagród `BOOSTER` i `KOSZULKI` obsługiwane są osobne efekty dźwiękowe
-   (`booster-fanfare.mp3`, `tshirt-win.mp3`) oraz animacje.
-6. Do pliku `spin.mp3` dodaj własny efekt dźwiękowy dla samego kręcenia.
+1. Otwórz `index.html` w przeglądarce dodanej w OBS.
+2. Naciśnij **Kręć!** albo wywołaj funkcję `onChatCommand('!spin')`, aby obrócić koło.
+3. Nazwy pól można modyfikować w panelu edycji w lewym dolnym rogu. Zmiany zapisywane są w `localStorage`.
+4. Wylosowanie pola **BOOSTER** wywołuje konfetti i dźwięk `booster-fanfare.mp3`.
+5. Dźwięk `tshirt-win.mp3` odtwarzany jest przy polu **KOSZULKI**. Plik `spin.mp3` służy jako odgłos samego kręcenia – możesz podmienić go na własny.
 
-Integrację z czatem YouTube należy zrealizować po stronie bota wywołującego funkcję `onChatCommand` po wykryciu komendy na czacie.
+Bot czatowy powinien po wykryciu komendy na czacie wywołać funkcję `onChatCommand` z odpowiednim argumentem.
