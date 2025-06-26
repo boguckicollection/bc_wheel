@@ -10,7 +10,7 @@ const tshirtSound = document.getElementById('tshirtSound');
 const pointerEl = document.getElementById('pointer');
 const lightsEl = document.getElementById('lights');
 
-const POINTER_ANGLE = Math.PI / 2; // pointer faces downward
+const POINTER_ANGLE = 3 * Math.PI / 2; // pointer faces upward
 
 // Different fonts for each sector
 const prizeFonts = [
@@ -149,23 +149,35 @@ function buildLights() {
   for (let i = 0; i < PEG_COUNT; i++) {
     const light = document.createElement('div');
     light.className = 'light';
-    light.style.transform = `rotate(${(i * 360 / PEG_COUNT)}deg) translate(${radius - 15}px)`;
+    light.style.transform = `rotate(${(i * 360 / PEG_COUNT)}deg) translate(${radius + 20}px)`;
     light.style.animationDelay = `${(i / PEG_COUNT)}s`;
     lightsEl.appendChild(light);
   }
 }
 
-function showResult(text) {
-  resultEl.textContent = text;
+function showResult(prize) {
+  resultEl.textContent = prize;
+  resultEl.classList.remove('neon');
+  if (prize.toLowerCase() === 'booster') {
+    resultEl.textContent = 'GRAFIT';
+    resultEl.classList.add('neon');
+  }
   resultEl.classList.remove('show');
   void resultEl.offsetWidth;
   resultEl.classList.add('show');
 }
 
-function triggerEffects(prize) {
+function triggerEffects(prize, index) {
   const p = prize.toLowerCase();
   if (p === 'booster') {
-    confetti({ particleCount: 200, spread: 100, origin: { y: 0.2 } });
+    const seg = 2 * Math.PI / prizes.length;
+    const mid = angle + index * seg + seg / 2;
+    const rect = canvas.getBoundingClientRect();
+    const origin = {
+      x: (rect.left + rect.width / 2 + Math.cos(mid) * rect.width / 2) / window.innerWidth,
+      y: (rect.top + rect.height / 2 + Math.sin(mid) * rect.height / 2) / window.innerHeight
+    };
+    confetti({ particleCount: 200, spread: 100, origin });
     boosterSound.currentTime = 0;
     boosterSound.play();
   }
@@ -216,12 +228,13 @@ function spin() {
       spinning = false;
       angle %= 2 * Math.PI;
       lightsEl.classList.remove('active');
-      const prize = prizes[getCurrentIndex()];
+      const idx = getCurrentIndex();
+      const prize = prizes[idx];
       history.push(prize);
       localStorage.setItem('history', JSON.stringify(history));
       updateHistory();
       showResult(prize);
-      triggerEffects(prize);
+      triggerEffects(prize, idx);
     }
   });
 }
