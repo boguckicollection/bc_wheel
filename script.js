@@ -10,7 +10,7 @@ const tshirtSound = document.getElementById('tshirtSound');
 const pointerEl = document.getElementById('pointer');
 const lightsEl = document.getElementById('lights');
 
-const POINTER_ANGLE = Math.PI / 2; // pointer faces downward
+const POINTER_ANGLE = -Math.PI / 2; // pointer at top
 
 // Different fonts for each sector
 const prizeFonts = [
@@ -149,7 +149,7 @@ function buildLights() {
   for (let i = 0; i < PEG_COUNT; i++) {
     const light = document.createElement('div');
     light.className = 'light';
-    light.style.transform = `rotate(${(i * 360 / PEG_COUNT)}deg) translate(${radius + 20}px)`;
+    light.style.transform = `rotate(${(i * 360 / PEG_COUNT) - 90}deg) translate(${radius + 20}px)`;
     light.style.animationDelay = `${(i / PEG_COUNT)}s`;
     lightsEl.appendChild(light);
   }
@@ -159,7 +159,7 @@ function showResult(prize) {
   resultEl.textContent = prize;
   resultEl.classList.remove('neon');
   if (prize.toLowerCase() === 'booster') {
-    resultEl.textContent = 'GRAFIT';
+    resultEl.textContent = 'BOOSTER';
     resultEl.classList.add('neon');
   }
   resultEl.classList.remove('show');
