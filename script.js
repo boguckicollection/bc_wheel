@@ -131,6 +131,7 @@ function spinWheel(remoteData = null) {
 
     angle += spinAngle;
     wheel.style.transform = `rotate(${angle}deg)`;
+    segmentsOverlay.style.transform = `rotate(${angle}deg)`;
     spinAudio.currentTime = 0;
     spinAudio.play();
     const result = prizes[index];
@@ -145,6 +146,7 @@ function spinWheel(remoteData = null) {
         localStorage.setItem('history', JSON.stringify(history));
         updateResultsTable();
         angle = angle % 360;
+        segmentsOverlay.style.transform = `rotate(${angle}deg)`;
     }, 4000);
 }
 
