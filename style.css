@@ -24,7 +24,7 @@ body{
 
 .pointer{
   position:absolute;
-  top:calc(50% - 250px);
+  top:calc(50% - 250px - 40px);
   left:50%;
   margin-left:-10px;
   width:0;
