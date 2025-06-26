@@ -1,30 +1,27 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stream Wheel</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Koło Gratisów</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="stage">
-        <div class="content">
-            <table id="resultsTable" class="results-table"></table>
-            <div class="wheel-container">
-                <div id="resultText" class="result-text"></div>
-                <div id="segments" class="segments"></div>
-                <div id="wheel" class="wheel"></div>
-                <div id="pointer" class="pointer"></div>
-            </div>
-        </div>
-        <button id="spinButton">Kręć!</button>
-        <div id="editPanel" class="edit-panel"></div>
+  <div class="wrapper">
+    <canvas id="wheel" width="500" height="500"></canvas>
+    <div id="pointer" class="pointer"></div>
+    <div id="result" class="result"></div>
+    <div class="controls">
+      <button id="spin">Kręć!</button>
     </div>
+    <table id="history" class="history"></table>
+    <div id="editor" class="editor"></div>
+  </div>
 
-    <audio id="spinAudio" src="spin.mp3" preload="auto"></audio>
-    <audio id="boosterAudio" src="booster-fanfare.mp3" preload="auto"></audio>
-    <audio id="tshirtAudio" src="tshirt-win.mp3" preload="auto"></audio>
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.4.0/dist/confetti.browser.min.js"></script>
-    <script src="script.js"></script>
+  <audio id="spinSound" src="spin.mp3" preload="auto"></audio>
+  <audio id="boosterSound" src="booster-fanfare.mp3" preload="auto"></audio>
+  <audio id="tshirtSound" src="tshirt-win.mp3" preload="auto"></audio>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.1/dist/confetti.browser.min.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
