@@ -75,3 +75,34 @@ body{
 
 .history{position:absolute;right:20px;top:20px;border-collapse:collapse;}
 .history th,.history td{border:1px solid #0ff;padding:4px 8px;}
+
+.lights{
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:0;
+  height:0;
+  pointer-events:none;
+}
+
+.light{
+  position:absolute;
+  width:14px;
+  height:14px;
+  margin:-7px 0 0 -7px;
+  border-radius:50%;
+  background:yellow;
+  box-shadow:0 0 10px yellow;
+  animation:blink 1s linear infinite;
+  animation-play-state:paused;
+  opacity:0.3;
+}
+
+.lights.active .light{
+  animation-play-state:running;
+}
+
+@keyframes blink{
+  0%,100%{opacity:0.3;}
+  50%{opacity:1;}
+}
