@@ -33,7 +33,7 @@ body{
   border-right:10px solid transparent;
   border-top:40px solid red;
   filter:drop-shadow(0 0 5px red);
-  transform-origin:50% 100%;
+  transform-origin:50% 0%;
 }
 
 .pointer.hit{

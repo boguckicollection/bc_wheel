@@ -12,7 +12,7 @@ const pointerEl = document.getElementById('pointer');
 // Different fonts for each sector
 const prizeFonts = [
   'Impact, Charcoal, sans-serif',
-  'Comic Sans MS, cursive, sans-serif',
+  'Trebuchet MS, sans-serif',
   'Courier New, monospace',
   'Brush Script MT, cursive',
   'Papyrus, fantasy'
@@ -51,12 +51,13 @@ function drawWheel() {
 
     const mid = start + seg / 2;
     ctx.save();
-    ctx.translate(radius + (radius * 0.8) * Math.cos(mid), radius + (radius * 0.8) * Math.sin(mid));
+    const labelRadius = radius * 0.75;
+    ctx.translate(radius + labelRadius * Math.cos(mid), radius + labelRadius * Math.sin(mid));
     ctx.rotate(mid + Math.PI);
     ctx.fillStyle = '#fff';
     let fontSize = radius / 5;
     ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
-    const maxWidth = seg * radius * 0.8;
+    const maxWidth = seg * radius * 0.75;
     while (ctx.measureText(prizes[i]).width > maxWidth && fontSize > 10) {
       fontSize -= 1;
       ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
