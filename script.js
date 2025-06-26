@@ -5,6 +5,7 @@ const spinAudio = document.getElementById('spinAudio');
 const boosterAudio = document.getElementById('boosterAudio');
 const tshirtAudio = document.getElementById('tshirtAudio');
 const pointer = document.getElementById('pointer');
+const segmentsOverlay = document.getElementById('segments');
 const resultsTable = document.getElementById('resultsTable');
 const resultText = document.getElementById('resultText');
 const channel = new BroadcastChannel('wheel-sync');
@@ -66,6 +67,33 @@ function drawWheel() {
 
     wheel.appendChild(svg);
     updateResultsTable();
+    drawSegments();
+}
+
+function drawSegments() {
+    segmentsOverlay.innerHTML = '';
+    const segAngle = 360 / prizes.length;
+    const size = segmentsOverlay.clientWidth;
+    const radius = size / 2;
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', `0 0 ${size} ${size}`);
+    svg.setAttribute('width', size);
+    svg.setAttribute('height', size);
+
+    for (let i = 0; i < prizes.length; i++) {
+        const angle = i * segAngle;
+        const x = radius + radius * Math.cos(angle * Math.PI / 180);
+        const y = radius + radius * Math.sin(angle * Math.PI / 180);
+        const line = document.createElementNS(svgNS, 'line');
+        line.setAttribute('x1', radius);
+        line.setAttribute('y1', radius);
+        line.setAttribute('x2', x);
+        line.setAttribute('y2', y);
+        svg.appendChild(line);
+    }
+
+    segmentsOverlay.appendChild(svg);
 }
 
 function buildEditor() {
