@@ -8,6 +8,9 @@ const spinSound = document.getElementById('spinSound');
 const boosterSound = document.getElementById('boosterSound');
 const tshirtSound = document.getElementById('tshirtSound');
 const pointerEl = document.getElementById('pointer');
+const lightsEl = document.getElementById('lights');
+
+const POINTER_ANGLE = Math.PI / 2; // pointer faces downward
 
 // Different fonts for each sector
 const prizeFonts = [
@@ -140,6 +143,18 @@ function buildEditor() {
   });
 }
 
+function buildLights() {
+  const radius = canvas.width / 2;
+  lightsEl.innerHTML = '';
+  for (let i = 0; i < PEG_COUNT; i++) {
+    const light = document.createElement('div');
+    light.className = 'light';
+    light.style.transform = `rotate(${(i * 360 / PEG_COUNT)}deg) translate(${radius - 15}px)`;
+    light.style.animationDelay = `${(i / PEG_COUNT)}s`;
+    lightsEl.appendChild(light);
+  }
+}
+
 function showResult(text) {
   resultEl.textContent = text;
   resultEl.classList.remove('show');
@@ -160,17 +175,24 @@ function triggerEffects(prize) {
   }
 }
 
+function getCurrentIndex() {
+  const seg = 2 * Math.PI / prizes.length;
+  let val = (POINTER_ANGLE - angle + 2 * Math.PI) % (2 * Math.PI);
+  return Math.floor(val / seg);
+}
+
 function spin() {
   if (spinning) return;
   spinning = true;
-  const seg = 2 * Math.PI / prizes.length;
-  const target = Math.floor(Math.random() * prizes.length);
-  const finalAngle = angle + (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI + target * seg + seg / 2;
+  const fullRot = (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI;
+  const finalAngle = angle + fullRot + Math.random() * 2 * Math.PI;
   const start = performance.now();
   const duration = SPIN_DURATION;
   const initial = angle;
   const pegStep = 2 * Math.PI / PEG_COUNT;
-  let lastPeg = Math.floor(angle / pegStep);
+  let lastPeg = Math.floor(((POINTER_ANGLE - angle + 2 * Math.PI) % (2 * Math.PI)) / pegStep);
+
+  lightsEl.classList.add('active');
 
   spinSound.currentTime = 0;
   spinSound.play();
@@ -180,7 +202,7 @@ function spin() {
     if (t > 1) t = 1;
     const eased = 1 - Math.pow(1 - t, 3);
     angle = initial + eased * (finalAngle - initial);
-    const currentPeg = Math.floor(angle / pegStep);
+    const currentPeg = Math.floor(((POINTER_ANGLE - angle + 2 * Math.PI) % (2 * Math.PI)) / pegStep);
     if (currentPeg !== lastPeg) {
       pointerEl.classList.remove('hit');
       void pointerEl.offsetWidth;
@@ -193,7 +215,8 @@ function spin() {
     } else {
       spinning = false;
       angle %= 2 * Math.PI;
-      const prize = prizes[target];
+      lightsEl.classList.remove('active');
+      const prize = prizes[getCurrentIndex()];
       history.push(prize);
       localStorage.setItem('history', JSON.stringify(history));
       updateHistory();
@@ -208,6 +231,7 @@ spinBtn.addEventListener('click', spin);
 drawWheel();
 buildEditor();
 updateHistory();
+buildLights();
 
 // example for chat command integration
 function onChatCommand(cmd) {
