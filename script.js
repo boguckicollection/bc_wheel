@@ -8,6 +8,15 @@ const spinSound = document.getElementById('spinSound');
 const boosterSound = document.getElementById('boosterSound');
 const tshirtSound = document.getElementById('tshirtSound');
 
+// Different fonts for each sector
+const prizeFonts = [
+  'Impact, Charcoal, sans-serif',
+  'Comic Sans MS, cursive, sans-serif',
+  'Courier New, monospace',
+  'Brush Script MT, cursive',
+  'Papyrus, fantasy'
+];
+
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
   'BOOSTER',
   'KARTA',
@@ -31,7 +40,7 @@ function drawWheel() {
     ctx.moveTo(radius, radius);
     ctx.arc(radius, radius, radius - 4, start, end);
     ctx.closePath();
-    ctx.fillStyle = `hsl(${i * 360 / prizes.length}, 70%, 50%)`;
+    ctx.fillStyle = `hsl(${i * 360 / prizes.length}, 60%, 80%)`;
     ctx.fill();
     ctx.strokeStyle = '#000';
     ctx.lineWidth = 2;
@@ -39,11 +48,12 @@ function drawWheel() {
 
     const mid = start + seg / 2;
     ctx.save();
-    ctx.translate(radius + (radius * 0.6) * Math.cos(mid), radius + (radius * 0.6) * Math.sin(mid));
-    ctx.rotate(mid + Math.PI / 2);
+    ctx.translate(radius + (radius * 0.8) * Math.cos(mid), radius + (radius * 0.8) * Math.sin(mid));
+    ctx.rotate(mid + Math.PI);
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 18px sans-serif';
+    ctx.font = `bold 24px ${prizeFonts[i % prizeFonts.length]}`;
     ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText(prizes[i], 0, 0);
     ctx.restore();
   }
