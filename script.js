@@ -19,6 +19,7 @@ const prizeFonts = [
 ];
 
 const PEG_COUNT = 30;
+const SPIN_DURATION = 4000; // spin time in milliseconds
 
 let prizes = JSON.parse(localStorage.getItem('prizes')) || [
   'BOOSTER',
@@ -51,13 +52,13 @@ function drawWheel() {
 
     const mid = start + seg / 2;
     ctx.save();
-    const labelRadius = radius * 0.75;
+    const labelRadius = radius * 0.65;
     ctx.translate(radius + labelRadius * Math.cos(mid), radius + labelRadius * Math.sin(mid));
     ctx.rotate(mid + Math.PI);
     ctx.fillStyle = '#fff';
     let fontSize = radius / 5;
     ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
-    const maxWidth = seg * radius * 0.75;
+    const maxWidth = seg * radius * 0.65;
     while (ctx.measureText(prizes[i]).width > maxWidth && fontSize > 10) {
       fontSize -= 1;
       ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
@@ -139,7 +140,7 @@ function spin() {
   const target = Math.floor(Math.random() * prizes.length);
   const finalAngle = angle + (5 + Math.floor(Math.random() * 4)) * 2 * Math.PI + target * seg + seg / 2;
   const start = performance.now();
-  const duration = 4000;
+  const duration = SPIN_DURATION;
   const initial = angle;
   const pegStep = 2 * Math.PI / PEG_COUNT;
   let lastPeg = Math.floor(angle / pegStep);
