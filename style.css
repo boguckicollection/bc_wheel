@@ -120,7 +120,6 @@ body {
     height: 100%;
     pointer-events: none;
     z-index: 1;
-    transform: rotate(0deg);
     transition: transform 4s cubic-bezier(0.33, 1, 0.68, 1);
 }
 

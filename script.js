@@ -94,6 +94,8 @@ function drawSegments() {
     }
 
     segmentsOverlay.appendChild(svg);
+    // keep segment lines aligned with the wheel's current rotation
+    segmentsOverlay.style.transform = `rotate(${angle}deg)`;
 }
 
 function buildEditor() {
