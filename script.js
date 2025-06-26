@@ -32,6 +32,33 @@ let history = JSON.parse(localStorage.getItem('history')) || [];
 let angle = 0;
 let spinning = false;
 
+const LABEL_PADDING = 15;
+
+function drawTriangularText(ctx, text) {
+  ctx.save();
+  ctx.textAlign = 'left';
+  const len = text.length;
+  let width = 0;
+  for (let i = 0; i < len; i++) {
+    const progress = i / Math.max(len - 1, 1);
+    const scale = 1 - progress * 0.6;
+    width += ctx.measureText(text[i]).width * scale;
+  }
+  let x = -width / 2 + LABEL_PADDING;
+  for (let i = 0; i < len; i++) {
+    const ch = text[i];
+    const progress = i / Math.max(len - 1, 1);
+    const scale = 1 - progress * 0.6; // gradually narrow
+    ctx.save();
+    ctx.translate(x, 0);
+    ctx.scale(scale, 1);
+    ctx.fillText(ch, 0, 0);
+    ctx.restore();
+    x += ctx.measureText(ch).width * scale;
+  }
+  ctx.restore();
+}
+
 function drawWheel() {
   const radius = canvas.width / 2;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -65,7 +92,7 @@ function drawWheel() {
     }
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(prizes[i], 0, 0);
+    drawTriangularText(ctx, prizes[i]);
     ctx.restore();
   }
 
