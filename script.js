@@ -10,7 +10,7 @@ const tshirtSound = document.getElementById('tshirtSound');
 const pointerEl = document.getElementById('pointer');
 const lightsEl = document.getElementById('lights');
 
-const POINTER_ANGLE = 3 * Math.PI / 2; // pointer faces upward
+const POINTER_ANGLE = Math.PI / 2; // pointer faces downward
 
 // Different fonts for each sector
 const prizeFonts = [
