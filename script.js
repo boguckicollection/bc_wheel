@@ -12,7 +12,7 @@ const pointerEl = document.getElementById('pointer');
 const POINTER_ANGLE = -Math.PI / 2; // pointer at top
 
 // Font used for all prize labels
-const LABEL_FONT = 'Helvetica, Arial, sans-serif';
+const LABEL_FONT = "'Poppins', Helvetica, Arial, sans-serif";
 
 const PEG_COUNT = 30;
 const SPIN_DURATION = 4000; // spin time in milliseconds
