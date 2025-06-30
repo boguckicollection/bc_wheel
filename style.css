@@ -1,7 +1,7 @@
 body{
   margin:0;
   background:transparent;
-  font-family:Helvetica, Arial, sans-serif;
+  font-family:'Poppins', Helvetica, Arial, sans-serif;
   color:#fff;
   text-align:center;
 }
@@ -18,8 +18,8 @@ body{
 
 #wheel{
   border-radius:50%;
-  box-shadow:0 0 10px #000;
-  background:#222;
+  box-shadow:0 0 20px rgba(0,0,0,0.6);
+  background:radial-gradient(circle at 50% 50%, #444, #222);
 }
 
 .pointer{
@@ -29,10 +29,10 @@ body{
   margin-left:-10px;
   width:0;
   height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:40px solid red;
-  filter:drop-shadow(0 0 5px red);
+  border-left:12px solid transparent;
+  border-right:12px solid transparent;
+  border-top:45px solid #ff3366;
+  filter:drop-shadow(0 0 6px #ff3366);
   transform-origin:50% 0;
 }
 
@@ -51,8 +51,9 @@ body{
   top:20px;
   left:50%;
   transform:translateX(-50%);
-  font-size:32px;
-  font-weight:bold;
+  font-size:40px;
+  font-weight:700;
+  letter-spacing:1px;
   pointer-events:none;
   opacity:0;
 }
@@ -77,7 +78,17 @@ body{
 
 #spin{
   font-size:24px;
-  padding:10px 20px;
+  padding:12px 28px;
+  border:none;
+  border-radius:50px;
+  background:linear-gradient(135deg,#ff1e5a,#ff6b9a);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+}
+
+#spin:active{
+  transform:scale(0.96);
 }
 
 .editor{position:absolute;bottom:20px;left:20px;background:rgba(0,0,0,0.6);padding:10px;border:1px solid #0ff;border-radius:4px;}
