@@ -11,14 +11,8 @@ const pointerEl = document.getElementById('pointer');
 
 const POINTER_ANGLE = -Math.PI / 2; // pointer at top
 
-// Different fonts for each sector
-const prizeFonts = [
-  'Impact, Charcoal, sans-serif',
-  'Trebuchet MS, sans-serif',
-  'Courier New, monospace',
-  'Brush Script MT, cursive',
-  'Papyrus, fantasy'
-];
+// Font used for all prize labels
+const LABEL_FONT = 'Helvetica, Arial, sans-serif';
 
 const PEG_COUNT = 30;
 const SPIN_DURATION = 4000; // spin time in milliseconds
@@ -86,11 +80,11 @@ function drawWheel() {
     ctx.rotate(mid + Math.PI);
     ctx.fillStyle = '#fff';
     let fontSize = radius / 5;
-    ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
+    ctx.font = `bold ${fontSize}px ${LABEL_FONT}`;
     const maxWidth = seg * radius * 0.65;
     while (ctx.measureText(prizes[i]).width > maxWidth && fontSize > 10) {
       fontSize -= 1;
-      ctx.font = `bold ${fontSize}px ${prizeFonts[i % prizeFonts.length]}`;
+      ctx.font = `bold ${fontSize}px ${LABEL_FONT}`;
     }
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
